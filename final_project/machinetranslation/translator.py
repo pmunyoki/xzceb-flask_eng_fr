@@ -12,17 +12,26 @@ url = os.environ['url']
 
 authenticator = IAMAuthenticator(apikey)
 language_translator = LanguageTranslatorV3(version = '2018-05-01', authenticator=authenticator)
-
 language_translator.set_service_url(url)
-# models = language_translator.list_models().get_result()
-# print(json.dumps(models, indent=2))
-def frenchToEnglish(frenchText):
-    #write the code here
-    englishText = language_translator.translate(text = frenchText, model_id = 'fr-en')
-    return englishText
+
+def frenchToEnglish(frenchText=None):
+    '''
+    This function translates text from French to English
+    '''
+    if frenchText is None:
+        return None
+    else:
+        englishText = language_translator.translate(text = frenchText, model_id = 'fr-en')\
+            .get_result().get("translations")[0]['translation']
+        return englishText
+
 def englishToFrench(englishText):
-    #write the code here
-    frenchText = language_translator.translate(text = englishText, model_id = 'en-fr').get_result()
-    return frenchText
-z = englishToFrench("Hello")
-print(z)
+    '''
+    This function translates text from English to French
+    '''
+    if englishText is None:
+        return None
+    else:
+        frenchText = language_translator.translate(text = englishText, model_id = 'en-fr')\
+            .get_result().get("translations")[0]['translation']
+        return frenchText
